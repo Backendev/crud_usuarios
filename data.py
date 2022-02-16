@@ -9,8 +9,17 @@ class Data(metaclass=Singleton):
     @property
     def data(self):
         return self.__data
-
-
+    def read_data(self):
+        l_data = []
+        for index,i in self.__data.iterrows():
+            user = {}
+            user['id'] = i['id']
+            user['name'] = i['name']
+            user['lastname'] = i['lastname']
+            user['age'] = i['age']
+            user['email'] = i['email']
+            l_data.append(user)
+        return l_data
     def get_data(self):
         self.__data = pd.read_json('users.json',orient ='index')
         self.__data.reset_index(inplace=True)
@@ -22,25 +31,26 @@ class Data(metaclass=Singleton):
         last_item = self.__data.iloc[-1,:].id
         new_id = int(last_item) +1
         return new_id
-    def new_user(self,user,idu):
+    def new_user(self,user):
         new_user = {
-            'id':idu,
+            'id':user.id,
             'name':user.name,
             'lastname':user.lastname,
             'age':user.age,
             'email':user.email
         }
         return new_user
+    def save(self):
+        self.__data.to_json('users.json',orient="index",indent=4)
+        self.get_data()
     def create_user(self,user):
         search_email = self.__data.query("email == '"+str(user.email)+"'")
         if len(search_email) == 0:
-            new_id = self.generate_id()
-            new_user = self.new_user(user,new_id)
+            new_user = self.new_user(user)
             self.__data = self.__data.append(
                 new_user, ignore_index=True)
             self.__data = self.__data.set_index('id')
-            self.__data.to_json('users.json',orient="index",indent=4)
-            self.get_data()
+            self.save()
             return new_user
         else:
             return False
@@ -77,7 +87,30 @@ class Data(metaclass=Singleton):
     def search_user(self,name=None,lastname=None,age=None,email=None,idu=None):
         query = self.create_query(name,lastname,age,email,idu)
         if query != None:
+            l_users = []
             result = self.__data.query(query)
-            print(len(result))
+            print(str(type(result)))
+            #result =result.set_index('id')
+            for index,i in result.iterrows():
+                user = {}
+                user['id'] = i['id']
+                user['name'] = i['name']
+                user['lastname'] = i['lastname']
+                user['age'] = i['age']
+                user['email'] = i['email']
+                l_users.append(user)
+            return l_users
         else:
-            print("Sin Resultados")
+            return []
+
+    def update_item(self,idu,field,value):
+        if field == 'name':
+            self.__data.loc[self.__data['id'] == int(idu),'name'] = value
+        if field == 'lastname':
+            self.__data.loc[self.__data['id'] == int(idu),'lastname'] = value
+        if field == 'age':
+            self.__data.loc[self.__data['id'] == int(idu),'age'] = value
+        if field == 'email':
+            self.__data.loc[self.__data['id'] == int(idu),'email'] = value
+        print(self.__data.loc[self.__data['id'] == int(idu)])
+
