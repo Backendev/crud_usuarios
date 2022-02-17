@@ -26,12 +26,14 @@ class Crud(metaclass=Singleton):
                 self.messages.error(str(i))
     def search(self,name=None,lastname=None,age=None,email=None,idu=None):
         res = self.data.search_user(name,lastname,age,email,idu)
+        print(type(res))
+        print("__")
         if len(res) > 0:
             self.messages.success("Se encontraron los siguientes resultados")
             for i in res:
                 self.messages.simple_success(str(i))
         else:
-            self.messages.error("No se encontraron Resultados")
+            self.messages.error("No se encontraron Resultados h")
         return res
     def update_field(self,idu,field,value):
         if field == 'name' or field == "lastname":
@@ -39,20 +41,20 @@ class Crud(metaclass=Singleton):
             return True
         if field == 'age':
             valid = self.user.valid_age(value)
-            print(valid)
-            print(type(valid))
             if valid:
                 self.data.update_item(idu=idu,field = field,value=value)
                 return True
             else:
-                return "Error"
+                return False
         if field == 'email':
             valid = self.user.valid_email(value)
             if valid:
                 self.data.update_item(idu=idu,field = field,value=value)
                 return True
             else:
-                return "Error"
+                return False
+    def delete(self,name=None,lastname=None,age=None,email=None,idu=None):
+        self.data.filter_delete_item(name,lastname,age,email,idu)
         
 
             
