@@ -35,3 +35,15 @@ class TestValidItems(unittest.TestCase):
     def test_valid_email_2(self):
         valid_email_item = self.u.valid_email(email="edward@correo.com.co")
         self.assertTrue(valid_email_item)
+
+    def test_valid_user(self):
+        valid_user = self.u.set_user(idu=2,name="camilo",lastname="arango",age=22,email="ca@mail.com")
+        self.assertTrue(valid_user)
+    
+    def test_invalid_user_age(self):
+        valid_user = self.u.set_user(idu=2,name="camilo",lastname="arango",age="ee",email="ca@mail.com")
+        self.assertEqual(valid_user,["La edad debe ser un Numero"])
+
+    def test_invalid_user_email(self):
+        valid_user = self.u.set_user(idu=2,name="camilo",lastname="arango",age=22,email="camail.com")
+        self.assertEqual(valid_user,["El formato de email debe ser abcde@abcde.ab.abc o abcde@abcde.abc; caracteres aceptados .!#$%&'*+/=?^_`{|}~-"])
