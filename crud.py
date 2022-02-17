@@ -61,6 +61,7 @@ class Crud(metaclass=Singleton):
                 cont = True
             if cont:
                 for i in search:
+                    self.messages.warning("Usuario: "+str(i))
                     name = self.messages.input("Nuevo name: ")
                     name = name.strip()
                     if len(name) != 0:
