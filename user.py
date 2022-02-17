@@ -10,7 +10,7 @@ class User(metaclass=Singleton):
     errors = {
                 'name': "El Nombre no puede esta vacio",
                 'lastname':"El Apellido no puede esta vacio",
-                'age': "La edad debe ser un ",
+                'age': "La edad debe ser un Numero",
                 'email': "El formato de email debe ser abcde@abcde.ab.abc o abcde@abcde.abc; caracteres aceptados .!#$%&'*+/=?^_`{|}~-"
             }
     @property
