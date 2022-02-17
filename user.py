@@ -48,7 +48,6 @@ class User(metaclass=Singleton):
         return res
     def valid_age(self,age):
         res = True if isinstance(age, int) else False
-        print(res)
         return res
     def get_user(self):
         user_d = {

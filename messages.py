@@ -28,4 +28,4 @@ class Messages:
     def tinfo(self,content):
         print(self.tinfot+"_"*5+"[ "+str(content)+" ]"+"_"*5+self.end)
     def warning(self,content):
-        print(self.warningt+content+self.end)
+        print(self.warningt+str(content)+self.end)
