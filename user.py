@@ -60,16 +60,12 @@ class User(metaclass=Singleton):
         return user_d
     def valid_items(function):
         def wrapper(self,idu,name,lastname,age,email):
-            patron_email = r'([a-zA-Z0-9\.\!\#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\~\-]+@[a-z]+\.[a-z]{3}\.[a-z]{2}|[a-zA-Z0-9\.\!\#\$\%\&\'\*\+\/\=\?\^\_\`\{\|\}\~\-]+@[a-z]+\.[a-z]{3})'
-            res_mail = ""
-            valid_patron = re.findall(patron_email, email)
-            if len(valid_patron) > 0:
-                res_mail = valid_patron[0]
+            res_mail = self.valid_email(email)
             validation = {
                 'name' : True if len(name) > 0 else self.errors['name'],
                 'lastname' : True if len(lastname) > 0 else self.errors['lastname'],
                 'age' : True if isinstance(age, int) else self.errors['age'],
-                'email' : True if res_mail == email else self.errors['email']
+                'email' : True if res_mail else self.errors['email']
             }
             valid = True
             errors_v =[]
